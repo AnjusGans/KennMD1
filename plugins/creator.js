@@ -1,34 +1,19 @@
-const { default: makeWASocket, BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, downloadContentFromMessage, downloadHistory, proto, getMessage, generateWAMessageContent, prepareWAMessageMedia } = require('@adiwajshing/baileys')
-let handler = async (m, {conn}) => {
-const vcard = `BEGIN:VCARD
-VERSION:3.0
-N:;;;
-FN: ᴹᴿ᭄ OscarOffcོ_1ঔৣ꧂
-item.ORG: ᴹᴿ᭄ OscarOffcོ_1ঔৣ꧂
-item1.TEL;waid=6285850539404:6285850539404@s.whatsapp.net
-item1.X-ABLabel:owner selalu ada 
-item2.YOUTUBE;type=INTERNET: https://youtube.com/channel/UCW7iXlE7TgvJMIXQck4NYBQ
-item2.X-ABLabel:YOUTUBE
-item3.ADR:;;🎍AMERIKA SERIKAT;;;;
-item3.X-ABADR:ac
-item3.X-ABLabel:asal kota
-item4.URL:https//github.com/Alpiii22 
-item4.X-ABLabel:Website
-END:VCARD`
-const sentMsg  = await conn.sendMessage(
-    m.chat,
-    { 
-        contacts: { 
-            displayName: 'OWNER BOT', 
-            contacts: [{ vcard }]  
-        }
-    }
-)
-let jarot = 'https://telegra.ph/file/00ca947f49354f6c108da.jpg'
-await conn.send3ButtonImg(m.chat, jarot, `*Hai kak @${m.sender.split('@')[0]} 👋,  Itu nomor owner gw…*`, '📮: jngn di spam kack', '𝙎𝙚𝙬𝙖', '.sewa', '𝘽𝙖𝙘𝙠', '.menu', '𝘿𝙤𝙣𝙖𝙨𝙞', '.donasi', sentMsg)}
-handler.help = ['owner2', 'creator2']
+let handler = async function (m, { conn }) {
+  let list = []
+  for (let i of owner.map(v => v + '@s.whatsapp.net')) {
+    let name = db.data.users[i] ? db.data.users[i].name : conn.getName(i)
+    list.push({
+      "displayName": name,
+      "vcard": `BEGIN:VCARD\nVERSION:3.0\nN:;${name};;;\nFN:${name}\nitem1.TEL;waid=${i.split('@')[0]}:${i.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD`
+    })
+  }
+  await conn.sendMessage(m.chat, {
+    "displayName": `${list.length} Contact`,
+    "contacts": list
+  }, 'contactsArrayMessage', { quoted: m })
+}
+handler.help = ['owner', 'creator']
 handler.tags = ['info']
-
-handler.command = /^(owner2|creator2)$/i
+handler.command = /^(owner|creator)$/i
 
 module.exports = handler
